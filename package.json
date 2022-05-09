@@ -1,23 +1,23 @@
 {
   "name": "bookstore",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RizkiB12/Bookstore.git"
-  },
+  "repository": "git+https://github.com/RizkiB12/Bookstore.git",
   "keywords": [],
-  "author": "",
+  "author": "bimogempar <bimogempar@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/RizkiB12/Bookstore/issues"
   },
   "homepage": "https://github.com/RizkiB12/Bookstore#readme",
   "dependencies": {
-    "sequelize": "^6.19.0"
-  }
+    "pg": "^8.7.3",
+    "sequelize": "^6.19.0",
+    "sequelize-cli": "^6.4.1"
+  },
+  "devDependencies": {},
+  "description": ""
 }
