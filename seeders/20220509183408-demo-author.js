@@ -34,7 +34,7 @@ module.exports = {
         updatedAt: new Date(),  
        },
        {
-        name: 'J. K. Rowling',
+        name: 'Lebron James',
         age: 47,
         gender: 'Male',
         createdAt: new Date(),

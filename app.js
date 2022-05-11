@@ -9,11 +9,15 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set('view engine', 'ejs');
+
 // 	Menampilkan seluruh author yang ada di database
 app.get('/authors', (req, res) => {
     db.Author.findAll()
         .then(authors => {
-            res.send(authors);
+            res.render('authors', {
+                authors: authors
+                });
         })
 })
 
@@ -21,7 +25,9 @@ app.get('/authors', (req, res) => {
 app.get('/books', (req, res) => {
     db.Book.findAll()
         .then(books => {
-            res.send(books);
+            res.render('books', {
+                books: books
+                });
         })
 })
 
