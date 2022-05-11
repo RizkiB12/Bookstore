@@ -1,0 +1,30 @@
+<form action="/books/add" method="post">
+    <div class="mb-3">
+      <label class="form-label">Email address</label>
+      <input type="text" name="title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">ISBN</label>
+      <input type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Stock</label>
+        <input type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Author</label>
+        <select name="" id="">
+            <option value="">Select Author</option>
+            <% authors.forEach((author,i) => { %>
+            <option value="<%= author.id %>"><%= author.name %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>

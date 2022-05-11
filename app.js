@@ -71,7 +71,12 @@ app.get('/books/buy/:id', (req, res) => {
 
 // Menampilkan form untuk menambahkan buku
 app.get('/books/add', (req, res) => {
-    res.send('Add Book Page');
+    db.Author.findAll()
+        .then(authors => {
+            res.render('addBooks', {
+                authors: authors});
+        })
+  
 })
 
 // 	Menambahkan data buku ke database
