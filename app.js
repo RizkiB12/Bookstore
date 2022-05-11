@@ -20,11 +20,14 @@ app.get('/books', (req, res) => {
 })
 
 app.get('/books/buy/:id', (req, res) => {
-    db.Book.findByPk(req.params.id)
+    db.Book.findOne({
+        where: {
+            id: req.params.id
+        }
+    })
         .then(book => {
             res.send(book);
         })
-        return res.send('Alhamdulillah');
 })
 
 app.post('/books/buy/:id', (req, res) => {
@@ -56,7 +59,7 @@ app.put('/books/restock/:id', (req, res) => {
         .then(book => {
             book.update({
                 quantity: book.quantity + 1
-            })  
+            })
             res.send(book);
         })
 })
