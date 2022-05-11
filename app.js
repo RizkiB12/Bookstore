@@ -15,11 +15,19 @@ app.set('view engine', 'ejs');
 
 // 	Menampilkan seluruh author yang ada di database
 app.get('/authors', (req, res) => {
-    db.Author.findAll()
+    db.Author.findAll({
+        include: [{
+            model: db.Book,
+            as: 'book'
+        }]
+    })
+        // .then(authors => {
+        //     res.send(authors)
+        // })
         .then(authors => {
             res.render('authors', {
                 authors: authors
-                });
+            });
         })
 })
 
@@ -39,7 +47,7 @@ app.get('/books', (req, res) => {
         .then(books => {
             res.render('books', {
                 books: books
-                });
+            });
         })
 })
 
