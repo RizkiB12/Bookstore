@@ -14,8 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'authorId',
         as: 'books'
       // define association here
-    });
-  }
   }
   Author.init({
     name: DataTypes.STRING,

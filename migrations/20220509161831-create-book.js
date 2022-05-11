@@ -7,12 +7,10 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      
+      },      
       authorId: {
         type: Sequelize.INTEGER
       },
-      
       title: {
         type: Sequelize.STRING
       },
