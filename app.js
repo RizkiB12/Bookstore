@@ -4,7 +4,12 @@ const port = 3000;
 
 const db = require('../bookstore/models/index')
 
-// get all authors
+// body parser
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// 	Menampilkan seluruh author yang ada di database
 app.get('/authors', (req, res) => {
     db.Author.findAll()
         .then(authors => {
@@ -12,6 +17,7 @@ app.get('/authors', (req, res) => {
         })
 })
 
+// 	Menampilkan seluruh buku yang ada di database yang memiliki stock lebih dari 0
 app.get('/books', (req, res) => {
     db.Book.findAll()
         .then(books => {
@@ -19,6 +25,7 @@ app.get('/books', (req, res) => {
         })
 })
 
+// 	Membeli buku dari bookstore dan mengurangi stock dari buku
 app.get('/books/buy/:id', (req, res) => {
     db.Book.findOne({
         where: {
@@ -30,50 +37,26 @@ app.get('/books/buy/:id', (req, res) => {
         })
 })
 
-app.post('/books/buy/:id', (req, res) => {
-    db.Book.findByPk(req.params.id)
-        .then(book => {
-            book.update({
-                quantity: book.quantity - 1
-            })
-            res.send(book);
-        })
+// Menampilkan form untuk menambahkan buku
+app.get('/books/add', (req, res) => {
+    res.send('Add Book Page');
 })
 
-app.get('/books/emptyList', (req, res) => {
-    db.Book.destroy()
-        .then(book => {
-            res.send(book);
-        })
-})
-
-app.get('/books/restock/:id', (req, res) => {
-    db.Book.findByPk(req.params.id)
-        .then(book => {
-            res.send(book);
-        })
-})
-
-app.put('/books/restock/:id', (req, res) => {
-    db.Book.findByPk(req.params.id)
-        .then(book => {
-            book.update({
-                quantity: book.quantity + 1
-            })
-            res.send(book);
-        })
-})
-
-app.delete('/books/delete/:id', (req, res) => {
-    db.Book.destroy({
-        where: {
-            id: req.params.id
-        }
-    }).then(book => {
-        res.send(book);
+// 	Menambahkan data buku ke database
+app.post('/books/add', (req, res) => {
+    // return res.send(req.body);
+    db.Book.create({
+        title: req.body.title,
+        isbn: req.body.isbn,
+        price: req.body.price,
+        stock: req.body.stock,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        authorId: req.body.authorId,
     })
+        .then(book => {
+            res.status(201).send(book);
+        })
 })
-
-
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
