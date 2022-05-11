@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Author.hasMany(models.Book, {
         foreignKey: 'authorId',
-        as: 'books'
-      // define association here
-    });
-  }
+        as: 'book'
+        // define association here
+      });
+    }
   }
   Author.init({
     name: DataTypes.STRING,

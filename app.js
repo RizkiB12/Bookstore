@@ -6,6 +6,8 @@ const db = require('../bookstore/models/index')
 
 // body parser
 const bodyParser = require('body-parser');
+const { stringify } = require('nodemon/lib/utils');
+const author = require('./models/author');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -23,7 +25,17 @@ app.get('/authors', (req, res) => {
 
 // 	Menampilkan seluruh buku yang ada di database yang memiliki stock lebih dari 0
 app.get('/books', (req, res) => {
-    db.Book.findAll()
+    db.Book.findAll({
+        where: {
+            stock: {
+                [db.Sequelize.Op.gt]: 0
+            }
+        },
+        include: [{
+            model: db.Author,
+            as: 'author'
+        }]
+    })
         .then(books => {
             res.render('books', {
                 books: books
@@ -35,11 +47,17 @@ app.get('/books', (req, res) => {
 app.get('/books/buy/:id', (req, res) => {
     db.Book.findOne({
         where: {
-            id: req.params.id
+            id: req.params.id,
         }
     })
         .then(book => {
-            res.send(book);
+            const updateStock = book.stock - 1;
+            book.update({
+                stock: updateStock,
+                updatedAt: new Date(),
+            }).then(() => {
+                res.send(book);
+            })
         })
 })
 
@@ -50,10 +68,11 @@ app.get('/books/add', (req, res) => {
 
 // 	Menambahkan data buku ke database
 app.post('/books/add', (req, res) => {
-    // return res.send(req.body);
+    const title = req.body.title;
+    const isbn = req.body.isbn;
     db.Book.create({
-        title: req.body.title,
-        isbn: req.body.isbn,
+        title: title,
+        isbn: stringify(title.replace(" ", "_") + isbn),
         price: req.body.price,
         stock: req.body.stock,
         createdAt: new Date(),
@@ -62,6 +81,57 @@ app.post('/books/add', (req, res) => {
     })
         .then(book => {
             res.status(201).send(book);
+        })
+})
+
+// 	Menampilkan seluruh buku yang ada di database yang memiliki stock 0
+app.get('/books/emptylist', (req, res) => {
+    db.Book.findAll({
+        where: {
+            stock: 0
+        }
+    })
+        .then(books => {
+            res.send(books);
+        })
+})
+
+// Menampilkan form untuk merestock buku
+app.get('/books/restock/:id', (req, res) => {
+    const bookId = req.params.id;
+    res.send(`Restock Book Page ${bookId}`);
+})
+
+// Mengupdate jumlah stock buku berdasarkan form restock buku
+app.post('/books/restock/:id', (req, res) => {
+    const bookId = req.params.id;
+    // const updateStock = req.body.updateStock;
+    // const incStock = 1
+    db.Book.findOne({
+        where: {
+            id: bookId,
+        }
+    })
+        .then(book => {
+            book.update({
+                stock: book.stock + 1,
+                updatedAt: new Date(),
+            }).then(() => {
+                res.send(book);
+            })
+        })
+})
+
+// Menghapus buku dari database
+app.delete('/books/delete/:id', (req, res) => {
+    const bookId = req.params.id;
+    db.Book.destroy({
+        where: {
+            id: bookId
+        }
+    })
+        .then(book => {
+            res.send('Successfully deleted book');
         })
 })
 
