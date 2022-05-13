@@ -105,7 +105,9 @@ app.get('/books/emptylist', (req, res) => {
         }
     })
         .then(books => {
-            res.send(books);
+            res.render('emptyBook', {
+                books: books
+                });
         })
 })
 
