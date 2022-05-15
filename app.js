@@ -14,6 +14,15 @@ const bookRoutes = require('./routes/books');
 app.use('/', authorsRoutes);
 app.use('/', bookRoutes);
 
+// helper function
+app.locals.replaceIntoRupiah = (int) => {
+    const numb = int;
+    const format = numb.toString().split('').reverse().join('');
+    const convert = format.match(/\d{1,3}/g);
+    const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('')
+    return rupiah
+}
+
 // initilize set ejs as view engine
 app.set('view engine', 'ejs');
 

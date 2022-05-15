@@ -3,26 +3,30 @@ const { stringify } = require("nodemon/lib/utils");
 const { redirect } = require("express/lib/response");
 const { sequelize } = require("../models/index");
 
+// replace space with underscore
+function replaceSpaceWithUnderscore(str) {
+  return str.replace(/\s/g, '_');
+}
+
 // get all books where stock > 0
 exports.getAllBooks = (req, res) => {
   db.Book.findAll({
     where: {
       stock: {
-        [db.Sequelize.Op.gt]: 0,
-      },
+        [db.Sequelize.Op.gt]: 0
+      }
     },
-    include: [
-      {
-        model: db.Author,
-        as: "author",
-      },
-    ],
-  }).then((books) => {
-    res.render("books", {
-      books: books,
-    });
-  });
-};
+    include: [{
+      model: db.Author,
+      as: 'author'
+    }]
+  })
+    .then(books => {
+      res.render('books', {
+        books: books,
+      });
+    })
+}
 
 // buy book and decrease stock of book
 exports.buyBook = (req, res) => {
@@ -58,17 +62,17 @@ exports.addBook = (req, res) => {
   const isbn = req.body.isbn;
   db.Book.create({
     title: title,
-    isbn: stringify(title.replace(" ", "_") + isbn),
+    isbn: replaceSpaceWithUnderscore(title) + isbn,
     price: req.body.price,
     stock: req.body.stock,
     createdAt: new Date(),
     updatedAt: new Date(),
     authorId: req.body.authorId,
-  }).then((book) => {
-    //res.status(201).send(book);
-    res.redirect("/books");
-  });
-};
+  })
+    .then(book => {
+      res.status(201).send(book);
+    })
+}
 
 // get all book where stock = 0
 exports.getAllBooksOutOfStock = (req, res) => {
