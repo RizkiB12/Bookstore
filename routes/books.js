@@ -10,6 +10,6 @@ router.post('/books/add', booksController.addBook);
 router.get('/books/emptylist', booksController.getAllBooksOutOfStock);
 router.get('/books/restock/:id', booksController.showRestockBookForm);
 router.post('/books/restock/:id', booksController.restockBook);
-router.delete('/books/delete/:id', booksController.deleteBook);
+router.post('/books/delete/:id', booksController.deleteBook);
 
 module.exports = router;
