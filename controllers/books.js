@@ -70,7 +70,8 @@ exports.addBook = (req, res) => {
     authorId: req.body.authorId,
   })
     .then(book => {
-      res.status(201).send(book);
+      //res.status(201).send(book);
+      res.redirect("/books");
     })
 }
 

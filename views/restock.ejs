@@ -20,8 +20,8 @@
     </nav>
 
     <form action="/books/restock/<%= book.id %>" method="post" class="px-5 mt-3 ">
-        <label for="form-label">Stock</label>
-        <input type="number" name="updateStock" class="form-control" required>
+        <label for="form-label">Update Stock <%= book.title %> Book</label>
+        <input type="number" name="updateStock" class="form-control mt-2" required>
         <button class="btn btn-primary mt-2">Submit</button>
     </form>
 </body>
