@@ -1,6 +1,11 @@
 const db = require('../models/index');
 const { stringify } = require('nodemon/lib/utils');
 
+// replace space with underscore
+function replaceSpaceWithUnderscore(str) {
+    return str.replace(/\s/g, '_');
+}
+
 // get all books where stock > 0
 exports.getAllBooks = (req, res) => {
     db.Book.findAll({
@@ -16,7 +21,7 @@ exports.getAllBooks = (req, res) => {
     })
         .then(books => {
             res.render('books', {
-                books: books
+                books: books,
             });
         })
 }
@@ -55,7 +60,7 @@ exports.addBook = (req, res) => {
     const isbn = req.body.isbn;
     db.Book.create({
         title: title,
-        isbn: stringify(title.replace(" ", "_") + isbn),
+        isbn: replaceSpaceWithUnderscore(title) + isbn,
         price: req.body.price,
         stock: req.body.stock,
         createdAt: new Date(),
